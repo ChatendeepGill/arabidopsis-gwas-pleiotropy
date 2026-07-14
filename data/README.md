@@ -11,7 +11,7 @@ Genome-wide association data were obtained from the AraGWAS Catalog, a curated d
 
 The AraGWAS data used in this study included SNP-trait associations passing the permutation-based significance thresholds reported by the database. The relevant AraGWAS identifiers and association data were subsequently processed to obtain gene-level measures of pleiotropy.
 
-The complete AraGWAS database is not redistributed in this repository. It can be accessed from the original AraGWAS Catalog. Processed datasets required to reproduce the analyses are provided where permitted. 
+The complete AraGWAS database is not redistributed in this repository. It can be accessed through the AraGWAS Catalog. Processed datasets required to reproduce the analyses are provided where permitted. 
 
 **Source:** Togninalli et al. (2017, 2019)
 
@@ -49,6 +49,8 @@ A genome-wide background set of protein-coding genes was generated from the TAIR
 
 Gene identifiers were extracted from all annotated protein-coding loci. Duplicate identifiers were removed before the resulting gene set was used as the genomic background for enrichment analyses. 
 
+The complete TAIR10 protein annotation is not redistributed in this repository. It can be downloaded from Ensembl Plants.
+
 **Source:** Ensembl Plants, TAIR10 annotation
 
 ## BUSCO Genes
@@ -56,6 +58,6 @@ Benchmarking Universal Single-Copy Orthologs were identified using the embryophy
 
 Transcript-specific suffixes were removed to convert transcript identifiers to TAIR10 gene identifiers, and duplicate gene identifiers were removed before analysis.
 
-The complete BUSCO lineage dataset is not redistributed in this repository. The processed *Arabidopsis thaliana* BUSCO gene list used in the analyses is provided in the processed/ directory.
+The complete BUSCO lineage dataset is not redistributed in this repository. The processed *Arabidopsis thaliana* BUSCO gene list used in the analyses is provided in the `processed/` directory.
 
 **Source:** Manni et al. (2021)
