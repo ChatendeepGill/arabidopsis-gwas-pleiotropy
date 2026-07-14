@@ -11,7 +11,7 @@ Genome-wide association data were obtained from the AraGWAS Catalog, a curated d
 
 The AraGWAS data used in this study included SNP-trait associations passing the permutation-based significance thresholds reported by the database. The relevant AraGWAS identifiers and association data were subsequently processed to obtain gene-level measures of pleiotropy.
 
-Processed datasets required to reproduce the analyses are provided where permitted. 
+The complete AraGWAS database is not redistributed in this repository. It can be accessed from the original AraGWAS Catalog. Processed datasets required to reproduce the analyses are provided where permitted. 
 
 **Source:** Togninalli et al. (2017, 2019)
 
