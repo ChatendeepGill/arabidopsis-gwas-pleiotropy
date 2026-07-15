@@ -9,15 +9,17 @@ input_file <- file.path(
 )
 
 # Define output
-output_file <- file.path(
-  "results",
-  "gene_pleiotropy_hill_metrics.csv"
+output_dir <- "results"
+
+dir.create(
+  output_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
 )
 
-# Create the results directory if it does not already exist.
-dir.create(
-  "results",
-  showWarnings = FALSE
+output_file <- file.path(
+  output_dir,
+  "gene_pleiotropy_hill_metrics.csv"
 )
 
 # Load gene-trait effect data 
