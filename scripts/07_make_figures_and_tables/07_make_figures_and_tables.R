@@ -29,35 +29,38 @@ network_file <- file.path(
   "merged_hill_coexp.csv"
 )
 
-# Define outputs 
-# Manuscript Figure 1.
+# Define outputs
+results_dir <- "results"
+figures_dir <- "figures"
+
+dir.create(
+  results_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+dir.create(
+  figures_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+# Manuscript Figure 1
 figure_pdf_file <- file.path(
-  "figures",
+  figures_dir,
   "Figure_1.pdf"
 )
 
 figure_jpg_file <- file.path(
-  "figures",
+  figures_dir,
   "Figure_1.jpg"
 )
 
-# Manuscript Table 1.
+# Manuscript Table 1
 table_file <- file.path(
-  "results",
+  results_dir,
   "Table_1_top_pleiotropic_genes.csv"
 )
-
-# Create output directories 
-dir.create(
-  "results",
-  showWarnings = FALSE
-)
-
-dir.create(
-  "figures",
-  showWarnings = FALSE
-)
-
 
 # Load data 
 pleiotropy_metrics <- read_csv(
