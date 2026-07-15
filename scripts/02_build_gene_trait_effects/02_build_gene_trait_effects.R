@@ -10,34 +10,32 @@ library(tidyr)
 snp_file <- file.path("results", "aragwas_combined_results.csv")
 
 # AraPheno phenotype metadata included in this repository. The metadata file must contain: phenotype_id, name, to_name.
-phenotype_file <- file.path("data", "external", "arapheno", "phenotype_list.csv")
+phenotype_file <- file.path("data", "external", "arapheno", "list_all_phenotypes.csv")
 
 # Define outputs
-# Main output containing one effect-size estimate per gene and ontology trait
-out_gene_trait_effects <- file.path(
-  "results",
-  "gene_trait_effects.csv"
+output_dir <- "results"
+dir.create(
+  output_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
 )
+
+# Main output containing one effect-size estimate per gene and ontology trait
+out_gene_trait_effects <- file.path(output_dir, "gene_trait_effects.csv")
 
 # Main output containing one row per gene and a readable list of its traits and corresponding standardized effect-size estimates
-out_gene_trait_table <- file.path(
-  "results",
-  "gene_trait_table.csv"
-)
+out_gene_trait_table <- file.path(output_dir, "gene_trait_table.csv")
 
 # Main output containing one row per gene and ontology trait, with effect magnitude renamed "abundance" for downstream Hill-diversity calculations
-out_gene_trait_collapsed <- file.path("results", "gene_trait_collapsed.csv")
+out_gene_trait_collapsed <- file.path(output_dir, "gene_trait_collapsed.csv")
 
 # OPTIONAL: Intermediate gene-by-phenotype summary
-out_gene_summary <- file.path(
-  "results",
-  "gene_summary_std_with_phenotype.csv"
-)
+out_gene_summary <- file.path(output_dir, "gene_summary_std_with_phenotype.csv")
 
-# Create the results directory if it does not already exist.
-dir.create(
-  "results",
-  showWarnings = FALSE
+# CONFIRM: Both input files exist before continuing
+stopifnot(
+  file.exists(snp_file),
+  file.exists(phenotype_file)
 )
 
 # Load SNP-level association results
@@ -46,7 +44,7 @@ snp_results <- fread(
 )
 
 # Apply the AraGWAS significance threshold
-# AraGWAS scores are reported as -log10(p). Therefore, score > 4 corresponds to: p < 1 x 10^-4
+# AraGWAS scores are reported as -log10(p). Therefore, score > 4 corresponds to p < 1 x 10^-4
 snp_results_filt <- snp_results %>%
   filter(
     score > 4
@@ -152,9 +150,9 @@ gene_summary_std_pheno <- gene_summary_std %>%
 # This gene-by-phenotype table is not required by later analysis scripts. Uncomment the following code to save it for inspection or record keeping.
 
 # fwrite(
-#   gene_summary_std_pheno,
-#   out_gene_summary
-# )
+#  gene_summary_std_pheno,
+#  out_gene_summary
+#  )
 
 # Remove climate-related phenotypes
 # AraGWAS climate phenotype names begin with "clim".
