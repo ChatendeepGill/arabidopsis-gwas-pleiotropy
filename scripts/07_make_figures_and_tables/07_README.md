@@ -10,7 +10,7 @@ Create manuscript-ready Figure 1 and Table 1 from the final processed datasets.
 **Figure 1** contains four panels:
 - **Panel A:** Distribution of Hill (q = 1) across genes
 - **Panel B:** Distribution of the number of ontology traits associated with each gene
-- **Panel C:** Relationship between trait richness and Hill (q = 1)
+- **Panel C:** Relationship between Hill (q = 1) and trait richness
 - **Panel D:** Relationship between Hill (q = 1) and co-expression network degree
 
 Linear trend lines are included in Panels C and D for visualization. The reported statistical associations are evaluated separately using Spearman rank correlations.
