@@ -179,8 +179,8 @@ pB <- ggplot(
 pC <- ggplot(
   hill_vs_traits,
   aes(
-    x = n_traits,
-    y = hill_q1
+    x = hill_q1,
+    y = n_traits
   )
 ) +
   geom_point(
@@ -194,8 +194,8 @@ pC <- ggplot(
   ) +
   theme_classic() +
   labs(
-    x = "Number of traits per gene",
-    y = "Hill q = 1",
+    x = "Hill q = 1",
+    y = "Number of traits per gene",
     title = "C"
   )
 
