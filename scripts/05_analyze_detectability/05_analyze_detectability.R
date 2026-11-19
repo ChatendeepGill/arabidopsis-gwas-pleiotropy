@@ -188,6 +188,16 @@ mean_tau_by_gwas_status <- tau_merged_clean %>%
 
 mean_tau_by_gwas_status
 
+# Compare mean tissue specificity between genes with and without retained GWAS associations
+# Welch's two-sample t-test
+tau_t_test <- t.test(
+  tau_mean ~ has_gwas_hit,
+  data = tau_merged_clean,
+  var.equal = FALSE
+)
+
+tau_t_test
+
 # Convert logistic-regression coefficients to odds ratios.
 tau_odds_ratios <- exp(
   coef(
