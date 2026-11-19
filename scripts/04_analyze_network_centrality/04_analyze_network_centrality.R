@@ -17,6 +17,14 @@ hill_file <- file.path(
   "gene_pleiotropy_hill_metrics.csv"
 )
 
+# Gene-level tissue-specificity estimates
+tau_file <- file.path(
+  "data",
+  "external",
+  "tissue_specificity",
+  "arabidopsis_tissue_specificity_tau.rds"
+)
+
 # Define outputs
 output_dir <- "results"
 
@@ -32,6 +40,16 @@ out_merged_file <- file.path(
   "merged_hill_coexp.csv"
 )
 
+out_merged_tau_file <- file.path(
+  output_dir,
+  "merged_hill_tau.csv"
+)
+
+out_correlations_file <- file.path(
+  output_dir,
+  "spearman_correlation_results.csv"
+)
+
 # Load data 
 coexp <- readRDS(
   coexp_file
@@ -42,9 +60,14 @@ hill <- read_csv(
   show_col_types = FALSE
 )
 
+tau <- readRDS(
+  tau_file
+)
+
 # Standardize gene identifiers
 # Rename the TAIR10 gene identifier column so that all datasets use the same column name.
 colnames(coexp)[colnames(coexp) == "TAIR_gene"] <- "gene"
+colnames(tau)[colnames(tau) == "TAIR_gene"] <- "gene"
 
 # Retain genes with a valid, positive Hill q = 1 value
 hill <- hill %>%
@@ -53,6 +76,7 @@ hill <- hill %>%
     hill_q1 > 0
   )
 
+# Co-expression network correlations
 # Merge datasets
 # Retain genes represented in both datasets.
 merged <- hill %>%
@@ -128,3 +152,88 @@ cor_hill_betweenness <- cor.test(
 )
 
 cor_hill_betweenness
+
+# Tissue specificity and GWAS-derived pleiotropy
+# Merge gene-level Hill q = 1 estimates with tissue-specificity estimates
+# This analysis is independent of co-expression network representation
+merged_tau <- hill %>%
+  select(
+    gene,
+    hill_q1
+  ) %>%
+  inner_join(
+    tau %>%
+      select(
+        gene,
+        tau_mean
+      ),
+    by = "gene"
+  ) %>%
+  filter(
+    is.finite(hill_q1),
+    is.finite(tau_mean)
+  )
+
+# Check the number of genes included
+nrow(merged_tau)
+
+# Save merged tissue-specificity dataset
+write_csv(
+  merged_tau,
+  out_merged_tau_file
+)
+
+# Calculate Spearman correlation
+cor_hill_tau <- cor.test(
+  merged_tau$hill_q1,
+  merged_tau$tau_mean,
+  method = "spearman",
+  exact = FALSE
+)
+
+cor_hill_tau
+
+# Summarize correlation results
+# Create a summary table containing sample sizes, Spearman correlation coefficients, and p-values
+correlation_results <- tibble(
+  comparison = c(
+    "Hill q1 vs co-expression degree",
+    "Hill q1 vs co-expression strength",
+    "Hill q1 vs co-expression closeness",
+    "Hill q1 vs co-expression betweenness",
+    "Hill q1 vs tissue specificity (tau)"
+  ),
+  
+  n_genes = c(
+    nrow(merged),
+    nrow(merged),
+    nrow(merged),
+    nrow(merged),
+    nrow(merged_tau)
+  ),
+  
+  spearman_rho = c(
+    unname(cor_hill_degree$estimate),
+    unname(cor_hill_strength$estimate),
+    unname(cor_hill_closeness$estimate),
+    unname(cor_hill_betweenness$estimate),
+    unname(cor_hill_tau$estimate)
+  ),
+  
+  p_value = c(
+    cor_hill_degree$p.value,
+    cor_hill_strength$p.value,
+    cor_hill_closeness$p.value,
+    cor_hill_betweenness$p.value,
+    cor_hill_tau$p.value
+  )
+)
+
+# Display results
+print(correlation_results)
+
+# Save correlation summary
+write_csv(
+  correlation_results,
+  out_correlations_file
+)
